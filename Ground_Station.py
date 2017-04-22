@@ -2,22 +2,23 @@
 
 """ WCP09 AR/VR Ground Staion Application (Python) """
 
-""" Contains the header information and manages Ground_Station.py
-    Ground_Station.py is the side of the code that perfroms most of the
-	calculations and sends signals via dronekit.
+""" 
+    Ground_Station.py is main module for the Python side of the Ground Station.
+    This module sets up a TCP server to allow communictaion with an iPad and headset software.
+    This module also sets up the initial DroneKit connection to the drone.
 """ 
 
 __author__ = "Alexander Rando"
 __copyright__ = "Copyright 2017, Binghamton University, State University of New York"
 __credits__ = ["Alexander T. Rando", "Robert Valenti", "Brandon Okraszewski", "Clinton Hastings", "Ryan Empson",
                        "WCP09_ARVRDRONE", "Binghamton University", "Lockheed Martin Corp."]
-__version__ = "1.0.1"
+__version__ = "1.0.2"
 __maintainer__ = "Alexander Rando"
 __email__ = "arando1@binghamton.edu"
 __status__ = "Development"
 
 
-""" General Imports """
+# General Imports
 import threading
 import time
 import sys
@@ -37,16 +38,11 @@ from iPad_data_collector import iPad_data_collector
 from headset_data_collector import headset_data_collector
 
 
-# TODO: This is where you import the other classes!
-
-"""  Enable this flag to prevent connecting with dronekit """
-
 """ This is the server object that will be running """
 class Ground_Station_TCP_Server():
-
-    disable_dronekit = True
     ipad_port = 8082
     headset_port = 8081
+    disable_dronekit = True # Value of True allows testing without dronekit
 
     def __init__(self):
         # Setup the iPad data collection server
