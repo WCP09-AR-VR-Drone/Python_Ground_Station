@@ -57,6 +57,14 @@ class Ground_Station_TCP_Server():
         self.headset_server.protocol.connection_port = self.headset_port
         self.headset_server.clients = []
         
+        use_drone = raw_input("Would you like to disable dronekit? (y/N): ")
+        if "y" in use_drone.lower():
+            print "DroneKit Disabled"
+            self.disable_dronekit = True
+        else:
+            print "DroneKit Enabled"
+            self.disable_dronekit = False
+
         # Initialize DroneKit connection, and send connection string to servers
         if not self.disable_dronekit:
             self.drone = connect("com4", wait_ready=None, baud=57600)
@@ -68,8 +76,19 @@ class Ground_Station_TCP_Server():
         self.headset_server.protocol.disable_dronekit = self.disable_dronekit
 
     def start_server(self):
+        use_headset = raw_input("Would you like to use the headset for gimbal controls? (y/N): ")
+        if "y" in use_headset.lower():
+            print "Gimbal Controls: Headset"
+            self.iPad_server.protocol.gimbal_control = "headset"
+            self.headset_server.protocol.gimbal_control = "headset"
+        else:
+            print "Gimbal Controls: iPad"
+            self.iPad_server.protocol.gimbal_control = "ipad"
+            self.headset_server.protocol.gimbal_control = "ipad"  
+
         reactor.listenTCP(self.ipad_port, self.iPad_server)
         reactor.listenTCP(self.headset_port, self.headset_server)
+
         print "The TCP sever has been initialized..."
         reactor.run()
 
